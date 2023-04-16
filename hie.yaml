@@ -1,0 +1,22 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "trinkets:lib"
+
+    - path: "./compiler/Main.hs"
+      component: "trinkets:exe:trinkets-compiler"
+
+    - path: "./compiler/Paths_trinkets.hs"
+      component: "trinkets:exe:trinkets-compiler"
+
+    - path: "./debug/Main.hs"
+      component: "trinkets:exe:trinkets-debug"
+
+    - path: "./debug/Paths_trinkets.hs"
+      component: "trinkets:exe:trinkets-debug"
+
+    - path: "./server/Main.hs"
+      component: "trinkets:exe:trinkets-server"
+
+    - path: "./server/Paths_trinkets.hs"
+      component: "trinkets:exe:trinkets-server"

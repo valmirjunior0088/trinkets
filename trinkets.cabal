@@ -1,0 +1,163 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.1.
+--
+-- see: https://github.com/sol/hpack
+
+name:           trinkets
+version:        0.1.0.0
+synopsis:       Monadic intermediate language and compiler targetting WebAssembly
+description:    Please see the README on GitHub at <https://github.com/valmirjunior0088/trinkets#readme>
+category:       Compiler, WebAssembly
+homepage:       https://github.com/valmirjunior0088/trinkets#readme
+bug-reports:    https://github.com/valmirjunior0088/trinkets/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2023-present Valmir Pretto
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/valmirjunior0088/trinkets
+
+library
+  exposed-modules:
+      Debug
+      Error
+      Intermediate.Compile
+      Intermediate.Parse
+      Intermediate.Syntax
+      Util
+      WebAssembly.Buffer
+      WebAssembly.Construct
+      WebAssembly.Encode.Ieee754
+      WebAssembly.Encode.Leb128
+      WebAssembly.Encode.Utf8
+      WebAssembly.Serialize
+      WebAssembly.Syntax.Conventions
+      WebAssembly.Syntax.Instructions
+      WebAssembly.Syntax.LLVM
+      WebAssembly.Syntax.Module
+      WebAssembly.Syntax.Types
+  other-modules:
+      Paths_trinkets
+  hs-source-dirs:
+      src
+  default-extensions:
+      BinaryLiterals
+      LambdaCase
+      ParallelListComp
+      NamedFieldPuns
+      NoFieldSelectors
+      DuplicateRecordFields
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      DeriveGeneric
+      DataKinds
+      TypeApplications
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.10 && <1
+    , containers >=0.6 && <1
+    , generic-lens >=2.2 && <3
+    , lens >=5.0 && <6
+    , megaparsec >=9.2 && <10
+    , mtl >=2.2 && <3
+  default-language: Haskell2010
+
+executable trinkets-compiler
+  main-is: Main.hs
+  other-modules:
+      Paths_trinkets
+  hs-source-dirs:
+      compiler
+  default-extensions:
+      BinaryLiterals
+      LambdaCase
+      ParallelListComp
+      NamedFieldPuns
+      NoFieldSelectors
+      DuplicateRecordFields
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      DeriveGeneric
+      DataKinds
+      TypeApplications
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.10 && <1
+    , containers >=0.6 && <1
+    , generic-lens >=2.2 && <3
+    , lens >=5.0 && <6
+    , megaparsec >=9.2 && <10
+    , mtl >=2.2 && <3
+    , trinkets
+  default-language: Haskell2010
+
+executable trinkets-debug
+  main-is: Main.hs
+  other-modules:
+      Paths_trinkets
+  hs-source-dirs:
+      debug
+  default-extensions:
+      BinaryLiterals
+      LambdaCase
+      ParallelListComp
+      NamedFieldPuns
+      NoFieldSelectors
+      DuplicateRecordFields
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      DeriveGeneric
+      DataKinds
+      TypeApplications
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.10 && <1
+    , containers >=0.6 && <1
+    , generic-lens >=2.2 && <3
+    , lens >=5.0 && <6
+    , megaparsec >=9.2 && <10
+    , mtl >=2.2 && <3
+    , trinkets
+  default-language: Haskell2010
+
+executable trinkets-server
+  main-is: Main.hs
+  other-modules:
+      Paths_trinkets
+  hs-source-dirs:
+      server
+  default-extensions:
+      BinaryLiterals
+      LambdaCase
+      ParallelListComp
+      NamedFieldPuns
+      NoFieldSelectors
+      DuplicateRecordFields
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      DeriveGeneric
+      DataKinds
+      TypeApplications
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.10 && <1
+    , containers >=0.6 && <1
+    , generic-lens >=2.2 && <3
+    , lens >=5.0 && <6
+    , megaparsec >=9.2 && <10
+    , mtl >=2.2 && <3
+    , wai >=3.2 && <4
+    , wai-app-static >=3.1 && <4
+    , warp >=3.3 && <4
+  default-language: Haskell2010

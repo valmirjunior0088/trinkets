@@ -1,0 +1,161 @@
+/*
+ * a trinkets program is a sequence of blocks and closures
+ * blocks are invoked while closures are allocated and entered
+ * the body of a block/closure is a chain of operations executed from top to bottom
+ * 
+ * chains
+ * - either execute an operation and bind a name for the result i.e.
+ *   name <- type.Operation [atom_1, atom_2, ...]; chain
+ * - or execute an operation and return the result to the caller i.e.
+ *   type.Operation [atom_1, atom_2, ...]
+ * 
+ * all arguments to operations must be atoms i.e.
+ * they must be NIL (the null pointer) or
+ * they must be a previously bound name (a memory location)
+ * 
+ * the types of atoms are erased: it is undefined behaviour
+ * to invoke operations on atoms of the wrong type
+ * 
+ * the `start` block is the entrypoint of the program
+ * the runtime expects the `start` block to return an `int32`
+ */
+
+block pure_example [one] do
+  // `Pure` simply returns an atom
+  other <- Pure [one];
+  Pure [other]
+end
+
+block jump_example [] do
+  // `Jump` invokes a block and returns its result
+  one <- int32.Alloc 1;
+  Jump pure_example [one]
+end
+
+closure add {one} [other] do
+  int32.Add [one, other]
+end
+
+block closure_example [] do
+  // closures must be allocated...
+  one <- int32.Alloc 1;
+  add_closure <- closure.Alloc add {one};
+
+  // ...and subsequently entered
+  two <- int32.Alloc 2;
+  three <- closure.Enter [add_closure] [two];
+
+  Pure [three]
+end
+
+block struct_example [] do
+  one <- int32.Alloc 1;
+  two <- flt32.Alloc 2.0;
+  three <- flt32.Alloc 3.0;
+
+  // structures group values together
+  numbers <- struct.Alloc [one, two, three];
+
+  // values are stored sequentially and
+  // can be retrieved with their index
+  number <- struct.Select [numbers] 1;
+
+  Pure [number]
+end
+
+block if_true [] do
+  int32.Alloc 10
+end
+
+block if_false [] do
+  int32.Alloc 20
+end
+
+block case_zero [] do
+  Pure [NIL]
+end
+
+block case_one [value] do
+  one <- int32.Alloc 1;
+  int32.Add [value, one]
+end
+
+block case_two [one, other] do
+  int32.Add [one, other]
+end
+
+block int32_example [] do
+  zero <- int32.Alloc 0;
+  one <- int32.Alloc 1;
+  two <- int32.Alloc 2;
+  three <- int32.Alloc 3;
+  fifty <- int32.Alloc 50;
+
+  // `int32.If` acts like a conditional `Jump`
+  // 0 is false; ..., -2, -1, 1, 2, ... is true
+  twenty <- int32.If [zero] do
+    true = if_true [];
+    false = if_false [];
+  end;
+
+  // `int32.Match` acts like a conditional `Jump`
+  // an `unreachable` trap is raised if there's no match
+  fifty_one <- int32.Match [one] do
+    0 = case_zero [];
+    1 = case_one [fifty];
+    2 = case_two [fifty, two];
+  end;
+  
+  // binary operations (outputs `int32`)
+  five <- int32.Add [two, three];
+  four <- int32.Sub [five, one];
+  six <- int32.Mul [two, three];
+  ten <- int32.Div [twenty, two]; // division is rounded down
+
+  // boolean operations (outputs `int32`)
+  true <- int32.And [one, zero];
+  false <- int32.Or [one, zero];
+
+  // comparison operations (outputs `int32`)
+  test_0 <- int32.Eq [one, two];
+  test_1 <- int32.Ne [one, two];
+  test_2 <- int32.Lt [one, two];
+  test_3 <- int32.Le [one, two];
+  test_4 <- int32.Gt [one, two];
+  test_5 <- int32.Ge [one, two];
+
+  Pure [NIL]
+end
+
+block flt32_example [] do
+  zero <- flt32.Alloc 0.0;
+  one <- flt32.Alloc 1.0;
+  two <- flt32.Alloc 2.0;
+  three <- flt32.Alloc 3.0;
+  twenty <- flt32.Alloc 20.0;
+  
+  // binary operations (outputs `flt32`)
+  five <- flt32.Add [two, three];
+  four <- flt32.Sub [five, one];
+  six <- flt32.Mul [two, three];
+  ten <- flt32.Div [twenty, two];
+
+  // comparison operations (outputs `int32`)
+  test_0 <- flt32.Eq [one, two];
+  test_1 <- flt32.Ne [one, two];
+  test_2 <- flt32.Lt [one, two];
+  test_3 <- flt32.Le [one, two];
+  test_4 <- flt32.Gt [one, two];
+  test_5 <- flt32.Ge [one, two];
+
+  Pure [NIL]
+end
+
+/* 
+ * the `start` block is the entrypoint of the program
+ * the runtime expects the `start` block to return an `int32`
+ */
+
+block start [] do
+  Jump jump_example []
+end
